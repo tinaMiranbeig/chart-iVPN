@@ -127,7 +127,7 @@ function renderExpiryChart(data, limit) {
 
 
 function getStats(uri, data = {}) {
-    const baseUrl = "https://hexav.click/stats"
+    const baseUrl = "https:"
     const url = baseUrl + uri
     console.log(url);
 
@@ -136,7 +136,7 @@ function getStats(uri, data = {}) {
         method: "GET",
         url: url,
         headers: {
-            "Authorization": "80fe47a2277c12991d2dd720df40321c",
+            "Authorization": "80",
         },
         params: data,
     });
