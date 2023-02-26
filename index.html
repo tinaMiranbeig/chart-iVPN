@@ -6,13 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="expiry-date-charts"></div>
-    <button type="button" id="expiry-date">Click Me!</button>
-    <input id="chooseDay">
-    <button id="rest"> rest</button>
+    <div class="wrapper">
+        <canvas id="myChart" style="width:100%;height:100%;"></canvas>
+        <div class="label">text</div>
+    </div>
+    <div class="input-group" style="width: 700px; height: 50px;">
+        <input type="text" class="form-control" aria-describedby="basic-addon2" id="chooseDay">
+        <div class="input-group-append" >
+            <button class="btn btn-outline-secondary" type="button" id="rest">choose day</button>
+            <button class="btn btn-outline-secondary" type="button"  id="expiry-date">7day</button>
+        </div>
+    </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

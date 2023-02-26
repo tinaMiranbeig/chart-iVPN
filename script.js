@@ -25,10 +25,36 @@ function renderExpiryChart(data, limit) {
 
     const dateValues = Array.from(slicedData.map(item => item.date))
     const totalValues = Array.from(slicedData.map(item => item.total))
-    var totalBy_traffic = Array.from(slicedData.map(item => item.by_traffic))
-    var totalBy_date = Array.from(slicedData.map(item => item.by_date))
+    var totalByTraffic = Array.from(slicedData.map(item => item.by_traffic))
+    var totalByDate = Array.from(slicedData.map(item => item.by_date))
 
-    document.getElementById("expiry-date-charts").innerHTML = `<canvas id="myChart" style="width:100%;max-width:60%"></canvas>`
+    /////////////mychart////////////////////////////////
+    var label = document.querySelector(".label");
+    var c = document.getElementById("myChart");
+    console.log('chart:', c);
+    var ctx = c.getContext("2d");
+    var cw = c.width = 700;
+    var ch = c.height = 350;
+    var cx = cw / 2,
+        cy = ch / 2;
+    var rad = Math.PI / 180;
+    var frames = 0;
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#999";
+    ctx.fillStyle = "#ccc";
+    ctx.font = "14px monospace";
+
+
+    var gradient = ctx.createLinearGradient(0, 0, 0, 400)
+    gradient.addColorStop(0, 'rgba(81,66,200,1)')
+    gradient.addColorStop(1, 'rgba(0,0,0,1)')
+
+
+    var gradient1 = ctx.createLinearGradient(0, 0, 0, 400)
+    gradient1.addColorStop(0, 'rgba(102,162,122,1) ')
+    gradient1.addColorStop(1, 'rgba(0,0,0,1)')
+
 
     new Chart("myChart", {
         type: "line",
@@ -38,24 +64,24 @@ function renderExpiryChart(data, limit) {
 
                 {
                     label: 'Values',
-                    lineTension: 0.3,
-                    backgroundColor: "rgb(0 117 255 / 20%)",
-                    borderColor: "rgba(0,0,255)",
+                    lineTension: 0.4,
+                    backgroundColor: gradient,
+                    borderColor: "rgba(65,105,225)",
                     data: totalValues
                 },
                 {
                     label: 'ByDate',
-                    lineTension: 0.3,
-                    // backgroundColor: "red",
-                    borderColor: "#009432",
-                    data: totalBy_date
+                    lineTension: 0.4,
+                    // backgroundColor: gradient1,
+                    borderColor: "#008B8B",
+                    data: totalByDate
                 },
                 {
                     label: 'ByTraffic',
-                    lineTension: 0.3,
+                    lineTension: 0.4,
                     // backgroundColor: "green",
-                    borderColor: "rgba(255,0,0)",
-                    data: totalBy_traffic
+                    borderColor: "rgba(255,20,147)",
+                    data: totalByTraffic
                 }
 
             ]
@@ -66,6 +92,24 @@ function renderExpiryChart(data, limit) {
                 xAxes: [{
                     gridLines: {
                         drawOnChartArea: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 15,
+                        autoSkip: false,
+                        callback: function(value, index, values) {                            
+                            if (values.length > this.options.ticks.maxTicksLimit) {
+                                if (index === 0 || index === values.length - 1) {
+                                    return value;
+                                }
+
+                                const skipRatio = Math.ceil(values.length / this.options.ticks.maxTicksLimit);
+                                if (index % skipRatio !== 0) {
+                                    return null;
+                                }
+                            }
+                          
+                            return value;
+                          }
                     }
                 }],
                 yAxes: [{
@@ -83,7 +127,7 @@ function renderExpiryChart(data, limit) {
 
 
 function getStats(uri, data = {}) {
-    const baseUrl = "https.........."
+    const baseUrl = "https://hexav.click/stats"
     const url = baseUrl + uri
     console.log(url);
 
@@ -92,7 +136,7 @@ function getStats(uri, data = {}) {
         method: "GET",
         url: url,
         headers: {
-            "Authorization": "80",
+            "Authorization": "80fe47a2277c12991d2dd720df40321c",
         },
         params: data,
     });
@@ -100,7 +144,7 @@ function getStats(uri, data = {}) {
 }
 
 window.onload = () => {
-    getStats("/vpn//", data = { "limit": limits.expiryDateLimit }).then((res) => {
+    getStats("/vpn/expiry-count-by-date/", data = { "limit": limits.expiryDateLimit }).then((res) => {
         const expiryData = res.data;
         fuckSystem.expiryData = expiryData;
         renderExpiryChart(expiryData, limit = limits.expiryDateLimit);
@@ -147,3 +191,8 @@ restBtn.addEventListener("click", () => {
     }
 
 })
+
+
+/////////////////////////////////
+
+
